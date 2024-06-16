@@ -1,4 +1,4 @@
-# Job Positions Management App
+# HiringHub - Job Positions Management App
 
 Welcome to the Job Positions Management App! This application helps manage job positions within an organization, allowing users to view, add, edit, and delete job positions. It provides a user-friendly interface for recruiters and hiring managers to efficiently manage their recruitment process.
 
