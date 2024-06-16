@@ -18,8 +18,8 @@ Welcome to the Job Positions Management App! This application helps manage job p
 ## Setup
 
 1. **Clone the Repository:**
-git clone https://github.com/your-username/job-positions-app.git
-cd job-positions-app
+git clone [https://github.com/your-username/job-positions-app.git](https://github.com/squeen1/HiringHub.git)
+cd hiringhub-app
 
 
 2. **Install Dependencies:**
