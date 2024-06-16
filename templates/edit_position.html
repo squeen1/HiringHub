@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <title>Edit Position</title>
+</head>
+<body>
+    {% include 'header.html' %}
+    <div class="container">
+        <h1>Edit Position</h1>
+        <form action="{{ url_for('edit_position', req_number=position['REQ#']) }}" method="post">
+            <label for="req_number">REQ#:</label>
+            <input type="text" id="req_number" name="req_number" value="{{ position['REQ#'] }}">
+            
+            <label for="date_opened">Date Opened:</label>
+            <input type="date" id="date_opened" name="date_opened" value="{{ position['Date Opened'] }}" >
+            
+            <label for="recruiter">Recruiter:</label>
+            <input type="text" id="recruiter" name="recruiter" value="{{ position['Recruiter'] }}" >
+            
+            <label for="position_title">Position Title:</label>
+            <select id="position_title" name="position_title" >
+                <option value="Associate" {% if position['Position Title'] == 'Associate' %}selected{% endif %}>Associate</option>
+                <option value="Sr. Associate" {% if position['Position Title'] == 'Sr. Associate' %}selected{% endif %}>Sr. Associate</option>
+                <option value="Lead Engineer" {% if position['Position Title'] == 'Lead Engineer' %}selected{% endif %}>Lead Engineer</option>
+                <option value="Principal Engineer" {% if position['Position Title'] == 'Principal Engineer' %}selected{% endif %}>Principal Engineer</option>
+                <option value="Sr. Principal Engineer" {% if position['Position Title'] == 'Sr. Principal Engineer' %}selected{% endif %}>Sr. Principal Engineer</option>
+                <option value="Distinguished Engineer" {% if position['Position Title'] == 'Distinguished Engineer' %}selected{% endif %}>Distinguished Engineer</option>
+                <option value="Architect" {% if position['Position Title'] == 'Architect' %}selected{% endif %}>Architect</option>
+                <option value="Sr. Architect" {% if position['Position Title'] == 'Sr. Architect' %}selected{% endif %}>Sr. Architect</option>
+                <option value="Product Owner" {% if position['Position Title'] == 'Product Owner' %}selected{% endif %}>Product Owner</option>
+                <option value="Sr. Product Owner" {% if position['Position Title'] == 'Sr. Product Owner' %}selected{% endif %}>Sr. Product Owner</option>
+                <option value="Other" {% if position['Position Title'] == 'Other' %}selected{% endif %}>Other</option>
+            </select>
+            
+            <label for="paygrade">Paygrade:</label>
+            <select id="paygrade" name="paygrade" >
+                <option value="5" {% if position['Paygrade'] == '5' %}selected{% endif %}>5</option>
+                <option value="6" {% if position['Paygrade'] == '6' %}selected{% endif %}>6</option>
+                <option value="7" {% if position['Paygrade'] == '7' %}selected{% endif %}>7</option>
+                <option value="8" {% if position['Paygrade'] == '8' %}selected{% endif %}>8</option>
+                <option value="9" {% if position['Paygrade'] == '9' %}selected{% endif %}>9</option>
+                <option value="Other" {% if position['Paygrade'] == 'Other' %}selected{% endif %}>Other</option>
+            </select>
+            
+            <label for="status">Status:</label>
+            <select id="status" name="status" >
+                <option value="Open" {% if position['Status'] == 'Open' %}selected{% endif %}>Open</option>
+                <option value="Closed" {% if position['Status'] == 'Closed' %}selected{% endif %}>Closed</option>
+                <option value="Filled" {% if position['Status'] == 'Filled' %}selected{% endif %}>Filled</option>
+                <option value="Cancelled" {% if position['Status'] == 'Cancelled' %}selected{% endif %}>Cancelled</option>
+                <option value="Other" {% if position['Status'] == 'Other' %}selected{% endif %}>Other</option>
+            </select>
+            
+            <label for="priority">Priority:</label>
+            <select id="priority" name="priority" >
+                <option value="High" {% if position['Priority'] == 'High' %}selected{% endif %}>High</option>
+                <option value="Medium" {% if position['Priority'] == 'Medium' %}selected{% endif %}>Medium</option>
+                <option value="Low" {% if position['Priority'] == 'Low' %}selected{% endif %}>Low</option>
+            </select>
+            
+            <label for="product_team">Product Team:</label>
+            <input type="text" id="product_team" name="product_team" value="{{ position['Product Team'] }}" >
+    
+            <label for="hiring_manager">Hiring Manager:</label>
+            <input type="text" id="hiring_manager" name="hiring_manager" value="{{ position['Hiring Manager'] }}" > 
+            <br /><br />
+            <button type="submit">Save Changes</button>
+        </form>
+    </div>
+    {% include 'footer.html' %}
+</body>
+</html>

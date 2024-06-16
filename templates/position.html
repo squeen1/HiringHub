@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <title>Position Details</title>
+
+</head>
+<body>
+    {% include 'header.html' %}
+    <div class="container">
+        <h1>Position Details</h1>
+        <p><strong>REQ#:</strong> {{ position['REQ#'] }}</p>
+        <p><strong>Date Opened:</strong> {{ position['Date Opened'] | datetimeformat }}</p>
+        <p><strong>Recruiter:</strong> {{ position['Recruiter'] }}</p>
+        <p><strong>Position Title:</strong> {{ position['Position Title'] }}</p>
+        <p><strong>Paygrade:</strong> {{ position['Paygrade'] }}</p>
+        <p><strong>Status:</strong> {{ position['Status'] }}</p>
+        <p><strong>Priority:</strong> {{ position['Priority'] }}</p>
+        <p><strong>Product Team:</strong> {{ position['Product Team'] }}</p>
+        <p><strong>Hiring Manager:</strong> {{ position['Hiring Manager'] }}</p>
+        <h2>Applicants</h2>
+        <table>
+            <tr>
+                <th>Applicant Name</th>
+                <th>Location</th>
+                <th>Shift</th>
+                <th>Salary Expectation</th>
+                <th>Interview 1 Date</th>
+                <th>Interview 1 Feedback</th>
+                <th>Interview 2 Date</th>
+                <th>Interview 2 Feedback</th>
+                <th>Interview 3 Date</th>
+                <th>Interview 3 Feedback</th>
+                <th>Interview 4 Date</th>
+                <th>Interview 4 Feedback</th>
+                <th>Hired</th>
+                <th>Resume/Notes</th>
+                <th>Actions</th>
+            </tr>
+            {% for applicant in applicants %}
+            <tr>
+                <td>{{ applicant['Applicant Name'] }}</td>
+                <td>{{ applicant['Location'] }}</td>
+                <td>{{ applicant['Shift'] }}</td>
+                <td>{{ applicant['Salary Expectation'] }}</td>
+                <td>{{ applicant['Interview 1 Date'] | datetimeformat }}</td>
+                <td>{{ applicant['Interview 1 Feedback'] }}</td>
+                <td>{{ applicant['Interview 2 Date'] | datetimeformat }}</td>
+                <td>{{ applicant['Interview 2 Feedback'] }}</td>
+                <td>{{ applicant['Interview 3 Date'] | datetimeformat }}</td>
+                <td>{{ applicant['Interview 3 Feedback'] }}</td>
+                <td>{{ applicant['Interview 4 Date'] | datetimeformat }}</td>
+                <td>{{ applicant['Interview 4 Feedback'] }}</td>
+                <td>{{ 'Yes' if applicant['Hired'] == 'Yes' else 'No' }}</td>
+                <td>
+                    {% if applicant['Resume'] %}
+                    <button onclick="openResumeModal('{{ applicant['Resume'] }}')">View Resume</button>
+                    {% else %}
+                    No Resume
+                    {% endif %} <br /><br />
+                    <button id="interviewNotesBtn_{{ loop.index }}" onclick="openModal('{{ applicant['Applicant Name'] }}', '{{ position['REQ#'] }}')">Interview Notes</button>
+                </td>
+                <td>
+                    <form action="{{ url_for('edit_applicant', req_number=position['REQ#']) }}" method="get">
+                        <input type="hidden" name="applicant_name" value="{{ applicant['Applicant Name'] }}">
+                        <button type="submit">Edit</button>
+                    </form>
+                    <form action="{{ url_for('delete_applicant', req_number=position['REQ#'], applicant_name=applicant['Applicant Name']) }}" method="post" style="display:inline;">
+                        <button type="submit">Delete</button>
+                    </form><br/><br/>
+
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+
+        <!-- Modal for displaying resume -->
+        <div id="resumeModal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeResumeModal()">&times;</span>
+                <h2>Resume</h2>
+                <iframe id="resumeFrame" src="" style="width:100%; height:800px;" frameborder="0"></iframe>
+            </div>
+        </div>
+        
+        <!-- Modal for displaying interview notes -->
+        <div id="interviewNotesModal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeModal()">&times;</span>
+                <h2>Interview Notes</h2>
+                <div id="interviewNotesContainer" style="width:100%; height:800px;"></div>
+            </div>
+        </div>
+
+
+<h2>Add New Applicant</h2>
+<form action="{{ url_for('add_applicant', req_number=req_number) }}" method="post" enctype="multipart/form-data">
+
+    <label for="applicant_name">Applicant Name:</label>
+    <input type="text" id="applicant_name" name="applicant_name" required><br>
+    <label for="location">Location:</label>
+    <input type="text" id="location" name="location"><br>
+    <label for="shift">Shift:</label>
+    <input type="text" id="shift" name="shift"><br>
+    <label for="salary_expectation">Salary Expectation:</label>
+    <input type="text" id="salary_expectation" name="salary_expectation"><br>
+    <label for="interview_1_date">Interview 1 Date:</label>
+    <input type="date" id="interview_1_date" name="interview_1_date"><br>
+    <label for="interview_1_feedback">Interview 1 Feedback:</label>
+    <textarea id="interview_1_feedback" name="interview_1_feedback"></textarea>
+    <label for="resume">Resume:</label>
+    <input type="file" id="resume" name="resume"><br><br>
+    <button type="submit">Add Applicant</button>
+</form>
+
+
+        </div>
+    {% include 'footer.html' %}
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <title>Edit Applicant</title>
+</head>
+<body>
+    {% include 'header.html' %}
+    <div class="container">
+    <h1>Edit Applicant</h1>
+    <form action="{{ url_for('edit_applicant', req_number=req_number) }}" method="post" enctype="multipart/form-data">
+        <label for="applicant_name">Applicant Name:</label>
+        <input type="text" id="applicant_name" name="applicant_name" value="{{ applicant['Applicant Name'] }}" >
+        <label for="location">Location:</label>
+        <input type="text" id="location" name="location" value="{{ applicant['Location'] }}" >
+        <label for="shift">Shift:</label>
+        <select id="shift" name="shift">
+            <option value="1st" {% if applicant['Shift'] == '1st' %}selected{% endif %}>1st</option>
+            <option value="2nd" {% if applicant['Shift'] == '2nd' %}selected{% endif %}>2nd</option>
+            <option value="3rd" {% if applicant['Shift'] == '3rd' %}selected{% endif %}>3rd</option>
+        </select>
+        <label for="salary_expectation">Salary Expectation:</label>
+        <input type="text" id="salary_expectation" name="salary_expectation" value="{{ applicant['Salary Expectation'] }}">
+        <label for="interview_1_date">Interview 1 Date:</label>
+        <input type="date" id="interview_1_date" name="interview_1_date" value="{{ applicant['Interview 1 Date'] }}" >
+        <label for="interview_1_feedback">Interview 1 Feedback:</label>
+        <textarea id="interview_1_feedback" name="interview_1_feedback" >{{ applicant['Interview 1 Feedback'] }}</textarea>
+        <label for="interview_2_date">Interview 2 Date:</label>
+        <input type="date" id="interview_2_date" name="interview_2_date" value="{{ applicant['Interview 2 Date'] }}">
+        <label for="interview_2_feedback">Interview 2 Feedback:</label>
+        <textarea id="interview_2_feedback" name="interview_2_feedback">{{ applicant['Interview 2 Feedback'] }}</textarea>
+        <label for="interview_3_date">Interview 3 Date:</label>
+        <input type="date" id="interview_3_date" name="interview_3_date" value="{{ applicant['Interview 3 Date'] }}">
+        <label for="interview_3_feedback">Interview 3 Feedback:</label>
+        <textarea id="interview_3_feedback" name="interview_3_feedback">{{ applicant['Interview 3 Feedback'] }}</textarea>
+        <label for="interview_4_date">Interview 4 Date:</label>
+        <input type="date" id="interview_4_date" name="interview_4_date" value="{{ applicant['Interview 4 Date'] }}">
+        <label for="interview_4_feedback">Interview 4 Feedback:</label>
+        <textarea id="interview_4_feedback" name="interview_4_feedback">{{ applicant['Interview 4 Feedback'] }}</textarea>
+        <label for="resume">Resume:</label>
+        <input type="file" id="resume" name="resume"><br>
+        {% if applicant['Resume'] %}
+        <p>Current resume: {{ applicant['Resume'] }}</p>
+        {% endif %}
+        <div class="form-group">
+            <label class="checkbox-label" for="hired">Hired:</label>
+            <input type="checkbox" id="hired" name="hired" class="checkbox-input" {% if applicant['Hired'] == 'Yes' %}checked{% endif %}>
+        </div>
+        <button type="submit">Save Changes</button>
+    </form>
+    </div>
+    {% include 'footer.html' %}
+</body>
+</html>

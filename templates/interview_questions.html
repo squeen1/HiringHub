@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <title>Interview Questions</title>
+</head>
+<body>
+    {% include 'header.html' %}
+    <div class="container">
+        <h1>Interview Questions</h1>
+        <form action="/interview_questions" method="POST">
+            <h2>Select Interview Files</h2>
+            {% for file_name in interview_files %}
+            <input type="checkbox" name="file_checkbox" value="{{ file_name }}"> {{ file_name }}<br>
+            {% endfor %}
+            <br>
+            <button type="submit">Load Questions</button>
+        </form>
+        
+        {% if questions_by_file %}
+        <h2>Interview Questions with Notes</h2>
+        <form action="{{ url_for('save_interview_notes_route') }}" method="post">
+            {% for file_name, questions_with_notes in questions_by_file.items() %}
+            <h3>{{ file_name }}</h3>
+            {% for question, note in questions_with_notes %}
+            {% if question %}
+            <div>
+                <p><strong>Question:</strong> {{ question }}</p>
+                <input type="hidden" name="question" value="{{ question }}">
+                <label for="note">Note:</label>
+                <textarea id="note" name="note"></textarea>
+            </div>
+            {% endif %}
+            {% endfor %}
+            {% endfor %}
+            <br /><hr /><br />
+            <label for="other_comments">Other Comments:</label>
+            <textarea id="other_comments" name="other_comments"></textarea><br><br>
+            <label for="applicant_name">Applicant Name:</label>
+            <input type="text" id="applicant_name" name="applicant_name" required><br>
+            <label for="req_number">Requirement Number:</label>
+            <select id="req_number" name="req_number" required>
+                <option value="">Select REQ Number</option>
+                {% for position in open_positions %}
+                    <option value="{{ position['REQ#'] }}">{{ position['REQ#'] }}</option>
+                {% endfor %}
+            </select><br>
+            <button type="submit">Save Notes</button>
+        </form>
+        {% endif %}
+    </div>
+    {% include 'footer.html' %}
+</body>
+</html>

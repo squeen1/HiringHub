@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <title>Home</title>
+</head>
+<body>
+    {% include 'header.html' %}
+    <div class="container">
+        <h1>Open Positions</h1>
+
+        <!-- Sorting and Filtering Form -->
+        <form method="get" action="{{ url_for('home') }}">
+            <div class="filter-sort-container">
+                 <label for="status_filter">Status:</label>
+                 <select id="status_filter" name="status_filter">
+                     <option value="">All</option>
+                     <option value="Open" {% if request.args.get('status_filter') == 'Open' %}selected{% endif %}>Open</option>
+                     <option value="Closed" {% if request.args.get('status_filter') == 'Closed' %}selected{% endif %}>Closed</option>
+                     <option value="Filled" {% if request.args.get('status_filter') == 'Filled' %}selected{% endif %}>Filled</option>
+                     <option value="Cancelled" {% if request.args.get('status_filter') == 'Cancelled' %}selected{% endif %}>Cancelled</option>
+                 </select>
+
+                 <label for="sort_by">Sort by:</label>
+                 <select id="sort_by" name="sort_by">
+                     <option value="REQ#" {% if request.args.get('sort_by') == 'REQ#' %}selected{% endif %}>REQ#</option>
+                     <option value="Date Opened" {% if request.args.get('sort_by') == 'Date Opened' %}selected{% endif %}>Date Opened</option>
+                     <option value="Recruiter" {% if request.args.get('sort_by') == 'Recruiter' %}selected{% endif %}>Recruiter</option>
+                     <option value="Position Title" {% if request.args.get('sort_by') == 'Position Title' %}selected{% endif %}>Position Title</option>
+                     <option value="Paygrade" {% if request.args.get('sort_by') == 'Paygrade' %}selected{% endif %}>Paygrade</option>
+                     <option value="Status" {% if request.args.get('sort_by') == 'Status' %}selected{% endif %}>Status</option>
+                     <option value="Priority" {% if request.args.get('sort_by') == 'Priority' %}selected{% endif %}>Priority</option>
+                     <option value="Product Team" {% if request.args.get('sort_by') == 'Product Team' %}selected{% endif %}>Product Team</option>
+                     <option value="Hiring Manager" {% if request.args.get('sort_by') == 'Hiring Manager' %}selected{% endif %}>Hiring Manager</option>
+                 </select>
+                 <br /><br />
+                 <button type="submit">Apply</button>
+             </div>
+         </form>
+
+
+        <table>
+            <tr>
+                <th>REQ#</th>
+                <th>Date Opened</th>
+                <th>Recruiter</th>
+                <th>Position Title</th>
+                <th>Paygrade</th>
+                <th>Status</th>
+                <th>Priority</th>
+                <th>Product Team</th>
+                <th>Hiring Manager</th>
+                <th>Actions</th>
+            </tr>
+            {% for position in positions %}
+            <tr>
+                <td><a href="{{ url_for('position', req_number=position['REQ#']) }}">{{ position['REQ#'] }}</a></td>
+                <td>{{ position['Date Opened'] | datetimeformat }}</td>
+                <td>{{ position['Recruiter'] }}</td>
+                <td>{{ position['Position Title'] }}</td>
+                <td>{{ position['Paygrade'] }}</td>
+                <td>{{ position['Status'] }}</td>
+                <td>{{ position['Priority'] }}</td>
+                <td>{{ position['Product Team'] }}</td>
+                <td>{{ position['Hiring Manager'] }}</td>
+                <td>
+                    <form action="{{ url_for('edit_position', req_number=position['REQ#']) }}" method="get" style="display:inline;">
+                        <button type="submit">Edit</button>
+                    </form>
+                    <form action="{{ url_for('delete_position', req_number=position['REQ#']) }}" method="post" style="display:inline;">
+                        <button type="submit">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+
+        <h2>Add New Position</h2>
+        <form action="{{ url_for('add_position') }}" method="post">
+            <label for="req_number">REQ#:</label>
+            <input type="text" id="req_number" name="req_number" value="REQ" required>
+            
+            <label for="date_opened">Date Opened:</label>
+            <input type="date" id="date_opened" name="date_opened">
+            
+            <label for="recruiter">Recruiter:</label>
+            <input type="text" id="recruiter" name="recruiter" value="Jeff">
+            
+            <label for="position_title">Position Title:</label>
+            <select id="position_title" name="position_title">
+                <option value="Associate">Associate</option>
+                <option value="Sr. Associate">Sr. Associate</option>
+                <option value="Lead Engineer">Lead Engineer</option>
+                <option value="Principal Engineer">Principal Engineer</option>
+                <option value="Sr. Principal Engineer">Sr. Principal Engineer</option>
+                <option value="Distinguished Engineer">Distinguished Engineer</option>
+                <option value="Architect">Architect</option>
+                <option value="Sr. Architect">Sr. Architect</option>
+                <option value="Product Owner">Product Owner</option>
+                <option value="Sr. Product Owner">Sr. Product Owner</option>
+                <option value="Other">Other</option>
+            </select>
+            
+            <label for="paygrade">Paygrade:</label>
+            <select id="paygrade" name="paygrade">
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+                <option value="Other">Other</option>
+            </select>
+            
+            <label for="status">Status:</label>
+            <select id="status" name="status">
+                <option value="Open">Open</option>
+                <option value="Closed">Closed</option>
+                <option value="Filled">Filled</option>
+                <option value="Cancelled">Cancelled</option>
+                <option value="Other">Other</option>
+            </select>
+            
+            <label for="priority">Priority:</label>
+            <select id="priority" name="priority">
+                <option value="High">High</option>
+                <option value="Medium">Medium</option>
+                <option value="Low">Low</option>
+            </select>
+            
+            <label for="product_team">Product Team:</label>
+            <input type="text" id="product_team" name="product_team">
+    
+            <label for="hiring_manager">Hiring Manager:</label>
+            <input type="text" id="hiring_manager" name="hiring_manager"> 
+            <br /><br />
+            <button type="submit">Add Position</button>
+        </form>
+    </div>
+    {% include 'footer.html' %}
+</body>
+</html>
