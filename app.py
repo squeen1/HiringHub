@@ -311,6 +311,8 @@ def add_applicant(req_number):
     applicants = load_applicants(req_number)
 
     applicant_name = capitalize_name(request.form['applicant_name'])
+    first_name, *_ = applicant_name.split(' ')
+    last_name = '_'.join(applicant_name.split(' ')[1:])
 #    first_name, last_name = applicant_name.split(' ')[:2]
     new_applicant = {
         'Applicant Name': applicant_name,
